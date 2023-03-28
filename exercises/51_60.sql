@@ -190,6 +190,19 @@ order by amt.maker, amt.type;
 -- #59 (**)
 -- Calculate the cash balance of each buy-back center for the database with money transactions being recorded not more than once a day.
 -- Result set: point, balance.
+with inc as (
+  select point, sum(inc) inc_sum
+  from income_o
+  group by point
+),
+out as (
+  select point, sum(out) out_sum
+  from outcome_o
+  group by point
+)
+select inc.point, (coalesce(inc.inc_sum, 0) - coalesce(out.out_sum, 0)) balance
+from inc
+full join out on inc.point = out.point;
 
 
 -- #60 (**)
@@ -197,3 +210,18 @@ order by amt.maker, amt.type;
 -- calculate the cash balance of each buy-back center at the beginning of 4/15/2001.
 -- Note: exclude centers not having any records before the specified date.
 -- Result set: point, balance
+with inc as (
+  select point, sum(inc) inc_sum
+  from Income_o
+  where date < '2001-04-15 00:00:00'
+  group by point
+),
+out as (
+  select point, sum(out) out_sum
+  from Outcome_o
+  where date < '2001-04-15 00:00:00'
+  group by point
+)
+select inc.point, (coalesce(inc.inc_sum, 0) - coalesce(out.out_sum, 0)) balance
+from inc
+full join out on inc.point = out.point

@@ -1,6 +1,6 @@
 # Solving SQL exercises on SQL-EX.ru
 > Learning stage <br>
-> Current rating rpos 16410 / score 100
+> Current rating rpos 13867 / score 109
 
 [About educational databases](https://www.sql-ex.ru/help/select13.php)
 
